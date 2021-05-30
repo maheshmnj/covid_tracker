@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:covid_tracker/services/api/exception.dart';
+import 'package:vaccine_tracker/services/api/exception.dart';
 import 'package:http/http.dart' as http;
-import 'package:covid_tracker/constants/constants.dart' show BASE_URL;
+import 'package:vaccine_tracker/constants/constants.dart' show BASE_URL;
 
 enum HttpMethod { GET, POST, PUT, DELETE, PATCH }
 

@@ -1,4 +1,4 @@
-package com.covid_tacker.app
+package com.vaccine_tacker.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,4 @@
-import 'package:covid_tracker/models/center_model.dart';
+import 'package:vaccine_tracker/models/center_model.dart';
 
 import '../../constants/const.dart';
 import 'api_provider.dart';
@@ -10,10 +10,11 @@ class VaccineProvider {
     apiProvider = ApiProvider();
   }
 
-  Future<List<CenterModel>> getVaccinesAvailabilty(String pinCode) async {
+  Future<List<CenterModel>> getVaccinesAvailabilty(
+      String pinCode, String date) async {
     try {
-      final Map data = await apiProvider.getRequest(
-          AVAILABILITY_ENDPOINT + '?pincode=$pinCode&date=30-05-2021');
+      final Map data = await apiProvider
+          .getRequest(AVAILABILITY_ENDPOINT + '?pincode=$pinCode&date=$date');
       final list = (data['centers'] as List)
           .map((e) => CenterModel.fromJson(e))
           .toList();
