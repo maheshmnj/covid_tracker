@@ -10,10 +10,10 @@ class VaccineProvider {
     apiProvider = ApiProvider();
   }
 
-  Future<List<CenterModel>> getVaccinesAvailabilty() async {
+  Future<List<CenterModel>> getVaccinesAvailabilty(String pinCode) async {
     try {
       final Map data = await apiProvider.getRequest(
-          AVAILABILITY_ENDPOINT + '?pincode=431602&date=30-05-2021');
+          AVAILABILITY_ENDPOINT + '?pincode=$pinCode&date=30-05-2021');
       final list = (data['centers'] as List)
           .map((e) => CenterModel.fromJson(e))
           .toList();
