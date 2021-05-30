@@ -19,8 +19,7 @@ class VaccineProvider {
           .toList();
       return list;
     } catch (_) {
-      print('caught exception $_');
-      return _;
+      throw _;
     }
   }
 }

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: '$APP_TITLE'),
+      home: HomePage(title: '$APP_TITLE'),
     );
   }
 }
