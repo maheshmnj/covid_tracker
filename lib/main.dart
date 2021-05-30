@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'constants/constants.dart' show APP_TITLE;
+import 'models/search_model.dart';
 import 'pages/home.dart';
 
 void main() {
@@ -10,14 +12,19 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '$APP_TITLE',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<SearchModel>(create: (_) => SearchModel()),
+      ],
+      child: MaterialApp(
+        title: '$APP_TITLE',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: HomePage(title: '$APP_TITLE'),
       ),
-      home: HomePage(title: '$APP_TITLE'),
     );
   }
 }

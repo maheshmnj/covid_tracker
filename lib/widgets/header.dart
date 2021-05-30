@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vaccine_tracker/models/search_model.dart';
 import '../exports.dart';
 import 'search.dart';
 import 'package:intl/intl.dart';
@@ -29,11 +30,23 @@ class _HeaderBuilderState extends State<HeaderBuilder> {
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 30)));
+    if (date != null) {
+      print(search.date);
+    }
     return date;
   }
 
   DateFormat formatter = DateFormat('dd-MM-yyyy');
   String selectedDate;
+  SearchModel search;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    search = SearchModel(dt: widget.initialDate);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -78,7 +91,7 @@ class _HeaderBuilderState extends State<HeaderBuilder> {
               )),
           Container(
             height: 100,
-            width: size.width < kMOBILE ? size.width / 1.5 : size.width / 2,
+            width: size.width < kMOBILE ? size.width / 1.4 : size.width / 2,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -95,6 +108,7 @@ class _HeaderBuilderState extends State<HeaderBuilder> {
                       setState(() {
                         selectedDate = formatter.format(date);
                       });
+                      search.date = selectedDate;
                       widget.onDateSelected(date);
                     },
                     child: Container(

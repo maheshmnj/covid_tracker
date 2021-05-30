@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:vaccine_tracker/models/center_model.dart';
+import 'package:vaccine_tracker/models/search_model.dart';
 import 'package:vaccine_tracker/services/api/vaccine_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -61,10 +63,27 @@ class _HomePageState extends State<HomePage> {
     selectedDate = formatter.format(DateTime.now());
   }
 
+  void executeSearch(String pinCode) async {
+    if (pinCode.isNotEmpty && pinCode.length == 6) {
+      removeFocus(context);
+      showCircularIndicator(context);
+      _search.zipCode = pinCode;
+      _vaccineController.sink.add(null);
+      final centers = await vaccineProvider.getVaccinesAvailabilty(
+          pinCode, selectedDate.toString());
+      stopCircularIndicator(context);
+      _vaccineController.sink.add(centers);
+      _viewController.animateTo(100,
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    }
+  }
+
   String selectedDate;
   DateFormat formatter;
+  SearchModel _search;
   @override
   Widget build(BuildContext context) {
+    _search = Provider.of(context, listen: false);
     return Scaffold(
       body: StreamBuilder<List<CenterModel>>(
           initialData: [],
@@ -79,24 +98,14 @@ class _HomePageState extends State<HomePage> {
                       initialDate: selectedDate,
                       onDateSelected: (x) {
                         selectedDate = formatter.format(x);
+                        _search.date = selectedDate;
                         setState(() {});
                       },
-                      onSearch: (pinCode) async {
-                        _vaccineController.sink.add(null);
-                        final centers =
-                            await vaccineProvider.getVaccinesAvailabilty(
-                                pinCode, selectedDate.toString());
-                        _vaccineController.sink.add(centers);
-                        _viewController.animateTo(100,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.ease);
-                      },
+                      onSearch: (pinCode) => executeSearch(pinCode),
                       height: height ?? MediaQuery.of(context).size.height),
-                  if (snapshot.data == null)
-                    LoadingWidget()
-                  else if (snapshot.hasError)
+                  if (snapshot.hasError)
                     Text('${snapshot.error}')
-                  else if (snapshot.data.isEmpty)
+                  else if (snapshot.data == null || snapshot.data.isEmpty)
                     Container()
                   else
                     Container(
