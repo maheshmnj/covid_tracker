@@ -8,11 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: flutter build web --web-renderer html --release
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COVID_TRACKER_76947 }}'
-          projectId: covid-tracker-76947
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_VACCINATEINDIA_B06B0 }}'
+          projectId: vaccinateindia-b06b0
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
