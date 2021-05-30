@@ -104,3 +104,7 @@ macos/**/xcuserdata/
 
 ios/Flutter/Debug.xcconfig
 ios/Flutter/Release.xcconfig
+.firebaserc
+firebase.json
+.github/workflows/firebase-hosting-merge.yml
+.gitignore
