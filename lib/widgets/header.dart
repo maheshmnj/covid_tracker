@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../exports.dart';
 import 'search.dart';
+import 'package:intl/intl.dart';
 
 class HeaderBuilder extends StatefulWidget {
   final Function(DateTime) onDateSelected;
@@ -30,10 +32,12 @@ class _HeaderBuilderState extends State<HeaderBuilder> {
     return date;
   }
 
+  DateFormat formatter = DateFormat('dd-MM-yyyy');
+  String selectedDate;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    bool expanded = widget.height == size.height ? true : false;
+    bool expanded = widget.height >= size.height ? true : false;
     return AnimatedContainer(
       duration: Duration(milliseconds: 500),
       height: widget.height,
@@ -44,15 +48,18 @@ class _HeaderBuilderState extends State<HeaderBuilder> {
             color: Colors.orange[200],
           ),
           Align(
-            alignment: Alignment.bottomRight,
+            alignment: Alignment.bottomCenter,
             child: AnimatedOpacity(
                 duration: Duration(seconds: 1),
-                opacity: expanded ? 0 : 1,
+                opacity: widget.height < size.height ? 1 : 0,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16, right: 16.0),
+                  padding: const EdgeInsets.only(bottom: 16, right: 16),
                   child: Text(
-                    'showing results for ${widget.initialDate}',
-                    style: TextStyle(fontSize: 16),
+                    '${widget.initialDate}',
+                    style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                   ),
                 )),
           ),
@@ -63,13 +70,15 @@ class _HeaderBuilderState extends State<HeaderBuilder> {
                 padding: EdgeInsets.only(bottom: expanded ? 200 : 120),
                 child: Text('VACCINE TRACKER',
                     style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontSize: size.width > kMOBILE
+                            ? size.width * 0.032
+                            : size.width * 0.06,
                         color: Colors.white,
                         fontWeight: FontWeight.bold)),
               )),
           Container(
             height: 100,
-            width: MediaQuery.of(context).size.width / 1.5,
+            width: size.width < kMOBILE ? size.width / 1.5 : size.width / 2,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -80,12 +89,27 @@ class _HeaderBuilderState extends State<HeaderBuilder> {
                 SizedBox(
                   width: 8,
                 ),
-                IconButton(
-                    onPressed: () async {
+                GestureDetector(
+                    onTap: () async {
                       final date = await selectDate();
+                      setState(() {
+                        selectedDate = formatter.format(date);
+                      });
                       widget.onDateSelected(date);
                     },
-                    icon: Icon(Icons.calendar_today))
+                    child: Container(
+                      height: 48,
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(bottom: 4),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6)),
+                      child: Text(
+                        selectedDate ?? formatter.format(DateTime.now()),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ))
               ],
             ),
           ),

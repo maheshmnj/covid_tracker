@@ -46,11 +46,24 @@ class CenterModel {
 
 @JsonSerializable(nullable: false)
 class Sessions {
-  final String major;
-  final String university;
-  final int coolness;
+  final String session_id;
+  final String date;
+  final int available_capacity;
+  final int min_age_limit;
+  final String vaccine;
+  final List<String> slots;
+  final int available_capacity_dose1;
+  final int available_capacity_dose2;
 
-  Sessions(this.major, this.university, this.coolness);
+  Sessions(
+      this.session_id,
+      this.date,
+      this.available_capacity,
+      this.min_age_limit,
+      this.vaccine,
+      this.slots,
+      this.available_capacity_dose1,
+      this.available_capacity_dose2);
   factory Sessions.fromJson(Map<String, dynamic> json) =>
       _$SessionsFromJson(json);
   Map<String, dynamic> toJson() => _$SessionsToJson(this);

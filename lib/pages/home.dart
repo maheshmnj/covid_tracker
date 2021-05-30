@@ -100,23 +100,74 @@ class _HomePageState extends State<HomePage> {
                     Container()
                   else
                     Container(
-                      height: MediaQuery.of(context).size.height / 1.5,
+                      height: MediaQuery.of(context).size.height / 1.1,
                       child: ListView.builder(
                         controller: _scrollController,
                         itemCount: snapshot.data.length,
                         itemBuilder: (_, x) {
+                          final vaccineLocation = snapshot.data[x];
+                          final sessions = snapshot.data[x].sessions[0];
                           return ExpansionTile(
                             title: Text(
-                              '${snapshot.data[x].name}',
+                              '${vaccineLocation.name}',
                             ),
-                            subtitle: Text('${snapshot.data[x].address}'),
-                            trailing: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('from ${snapshot.data[x].from}'),
-                                Text('To ${snapshot.data[x].to}')
-                              ],
-                            ),
+                            subtitle: Text('${vaccineLocation.address}'),
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 8),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            'Min age: ${sessions.min_age_limit}'),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Text(
+                                            'Available Capacity: ${sessions.available_capacity}'),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Text(
+                                            'Available Capacity Dose1: ${sessions.available_capacity_dose1}'),
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Text(
+                                            'Available Capacity Dose2: ${sessions.available_capacity_dose2}')
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text('${sessions.vaccine} '),
+                                  )
+                                ],
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Wrap(
+                                  spacing: 8,
+                                  runSpacing: 2,
+                                  children: sessions.slots
+                                      .map((e) => InputChip(
+                                            label: Text(e),
+                                            onPressed: () {},
+                                            backgroundColor: Colors
+                                                .blueAccent[100]
+                                                .withOpacity(0.5),
+                                          ))
+                                      .toList(),
+                                ),
+                              )
+                            ],
                           );
                         },
                       ),

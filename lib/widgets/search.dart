@@ -39,7 +39,7 @@ class _SearchBuilderState extends State<SearchBuilder> {
               setState(() {});
             },
             decoration: InputDecoration(
-              hintText: 'Search vaccine centers by pincode ',
+              hintText: 'Enter pincode ',
               suffixIcon: IconButton(
                 onPressed: () => isValid
                     ? widget.onSearch(widget.textEditingController.text)
