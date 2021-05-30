@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter_template/services/api/exception.dart';
+import 'package:covid_tracker/services/api/exception.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_template/constants/constants.dart' show BASE_URL;
+import 'package:covid_tracker/constants/constants.dart' show BASE_URL;
 
 enum HttpMethod { GET, POST, PUT, DELETE, PATCH }
 
@@ -19,7 +19,7 @@ class ApiProvider {
     } catch (_) {}
   }
 
-  handleResponse(http.Response res) {
+  Object handleResponse(http.Response res) {
     switch (res.statusCode) {
       case 200:
         return json.decode(res.body);
@@ -38,7 +38,7 @@ class ApiProvider {
     }
   }
 
-  Future<http.Response> getRequest(String endPoint,
+  Future<Object> getRequest(String endPoint,
       {Map<String, dynamic> headers}) async {
     var responseJson;
     try {
