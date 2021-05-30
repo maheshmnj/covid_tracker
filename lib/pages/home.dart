@@ -99,6 +99,7 @@ class _HomePageState extends State<HomePage> {
                       onDateSelected: (x) {
                         selectedDate = formatter.format(x);
                         _search.date = selectedDate;
+                        executeSearch(_search.zipCode ?? '');
                         setState(() {});
                       },
                       onSearch: (pinCode) => executeSearch(pinCode),

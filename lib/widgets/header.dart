@@ -27,23 +27,21 @@ class _HeaderBuilderState extends State<HeaderBuilder> {
   Future<DateTime> selectDate() async {
     final date = showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: selected,
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 30)));
-    if (date != null) {
-      print(search.date);
-    }
     return date;
   }
 
   DateFormat formatter = DateFormat('dd-MM-yyyy');
   String selectedDate;
   SearchModel search;
-
+  DateTime selected;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    selected = DateTime.now();
     search = SearchModel(dt: widget.initialDate);
   }
 
@@ -104,12 +102,14 @@ class _HeaderBuilderState extends State<HeaderBuilder> {
                 ),
                 GestureDetector(
                     onTap: () async {
-                      final date = await selectDate();
-                      setState(() {
-                        selectedDate = formatter.format(date);
-                      });
-                      search.date = selectedDate;
-                      widget.onDateSelected(date);
+                      selected = await selectDate();
+                      if (selected != null) {
+                        setState(() {
+                          selectedDate = formatter.format(selected);
+                        });
+                        search.date = selectedDate;
+                        widget.onDateSelected(selected);
+                      }
                     },
                     child: Container(
                       height: 48,
